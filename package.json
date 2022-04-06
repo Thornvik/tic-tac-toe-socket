@@ -4,6 +4,7 @@
   "description": "socket for tic-tac-toe game",
   "main": "index.js",
   "scripts": {
+    "start": "node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
