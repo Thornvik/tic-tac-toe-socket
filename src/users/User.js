@@ -20,6 +20,14 @@ const addUser = ({ id, username, room }) => {
     }
   }
 
+  const usersInRoom = getUsersInRoom().length
+
+  if (usersInRoom > 2) {
+    return {
+      error: 'Room is full'
+    }
+  }
+
   const user = { id, username, room }
   users.push(user)
   return { user }
