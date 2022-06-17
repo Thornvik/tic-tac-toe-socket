@@ -53,10 +53,10 @@ io.on("connection", (socket) => {
     })
   })
 
-  socket.on('playerMove', (playingField) => {
+  socket.on('playerMove', (playingField, turn) => {
     const user = getUser(socket.id)
 
-    io.to(user.room).emit('oponentMove', playingField)
+    io.to(user.room).emit('oponentMove', playingField, turn)
   })
   
   socket.on("disconnect", () => {
