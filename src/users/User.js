@@ -16,7 +16,7 @@ const addUser = ({ id, username, room }) => {
 
   if (existingUser) {
     return {
-      error: 'Username is in use!',
+      error: 'That username is not available',
     }
   }
 
