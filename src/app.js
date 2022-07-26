@@ -1,6 +1,6 @@
-const express = require("express");
-const http = require("http");
-const socketIo = require("socket.io");
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
 const {
   addUser,
   removeUser,
@@ -9,7 +9,7 @@ const {
 } = require('./users/user')
 
 const port = process.env.PORT || 3001;
-const index = require("./routes/index");
+const index = require('./routes/index');
 
 const app = express();
 app.use(index);
@@ -19,14 +19,14 @@ const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
     origin: ['http://localhost:3000', 'http://localhost:3002'],
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['my-custom-header'],
     credentials: true
   }
 });
 
-io.on("connection", (socket) => {
-  console.log("New client connected");
+io.on('connection', (socket) => {
+  console.log('New client connected');
 
   socket.on('join', ({ username, room, players }, callback) => {
     const { error, user } = addUser({ id: socket.id, username, room })
@@ -58,11 +58,23 @@ io.on("connection", (socket) => {
 
     io.to(user.room).emit('oponentMove', playingField, turn)
   })
-  
-  socket.on("disconnect", () => {
+
+  socket.on('playerWin', (username) => {
+    const user = getUser(socket.id)
+
+    io.to(user.room).emit('gameEnd', username)
+  })
+
+  socket.on('replay', (playingField, turn) => {
+    const user = getUser(socket.id)
+
+    io.to(user.room).emit('oponentMove', playingField, turn)
+  })
+
+  socket.on('disconnect', () => {
     removeUser(socket.id)
 
-    console.log("Client disconnected");
+    console.log('Client disconnected');
   });
 });
 
