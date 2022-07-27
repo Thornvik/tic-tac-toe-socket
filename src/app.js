@@ -65,6 +65,12 @@ io.on('connection', (socket) => {
     io.to(user.room).emit('gameEnd', username)
   })
 
+  socket.on('gameTie', () => {
+    const user = getUser(socket.id)
+
+    io.to(user.room).emit('gameEnd')
+  })
+
   socket.on('replay', (playingField, turn) => {
     const user = getUser(socket.id)
 
